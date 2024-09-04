@@ -1,9 +1,10 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash, get_flashed_messages
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 import pytz
 
 app = Flask(__name__)
+app.secret_key = '123'
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://user:1234@db/mydatabase'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -48,6 +49,18 @@ def register():
         username = request.form['username']
         email = request.form['email']
         password = request.form['password']
+
+        # 사용자 이름 중복 확인
+        existing_user = User.query.filter_by(username=username).first()
+        if existing_user:
+            flash('Username is already taken. Please choose a different one.')
+            return redirect(url_for('register'))
+
+        # 이메일 중복 확인
+        existing_email = User.query.filter_by(email=email).first()
+        if existing_email:
+            flash('Email is already registered. Please use a different email.')
+            return redirect(url_for('register'))
 
         # 새로운 사용자 생성
         new_user = User(username=username, email=email, password=password)
