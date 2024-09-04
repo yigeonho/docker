@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Success</title>
+</head>
+<body>
+    <h1>Login Success!!</h1>
+    <p>Current Time: <span id="current_time">{{ current_time }}</span></p>
+
+    <script>
+        // JavaScript to update the time every second
+        function updateTime() {
+            // Get the current time from the span element
+            var currentTimeElement = document.getElementById("current_time");
+
+            // Parse the current time into a Date object
+            var currentTime = new Date(currentTimeElement.textContent);
+
+            // Add one second
+            currentTime.setSeconds(currentTime.getSeconds() + 1);
+
+            // Format the time as a string (YYYY-MM-DD HH:MM:SS)
+            var formattedTime = currentTime.getFullYear() + '-' +
+                                String(currentTime.getMonth() + 1).padStart(2, '0') + '-' +
+                                String(currentTime.getDate()).padStart(2, '0') + ' ' +
+                                String(currentTime.getHours()).padStart(2, '0') + ':' +
+                                String(currentTime.getMinutes()).padStart(2, '0') + ':' +
+                                String(currentTime.getSeconds()).padStart(2, '0');
+
+            // Update the span element's content
+            currentTimeElement.textContent = formattedTime;
+        }
+
+        // Update the time every 1000 milliseconds (1 second)
+        setInterval(updateTime, 1000);
+    </script>
+</body>
+</html>
